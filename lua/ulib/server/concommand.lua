@@ -26,56 +26,55 @@ ULib.sayCmds = ULib.sayCmds or {}
 
 		v2.10 - Made case-insensitive
 ]]
-local function sayCmdCheck( ply, strText, bTeam )
-	local match
-	for str, data in pairs( ULib.sayCmds ) do
-		local str2 = str
-		if strText:len() < str:len() then -- Go ahead and allow commands w/o spaces
-			str2 = string.Trim( str )
-		end
+hook.Add( "PlayerSay", "ULib_saycmd", function( ply, strText, bTeam )
+    local match
+    for str, data in pairs( ULib.sayCmds ) do
+        local str2 = str
+        if strText:len() < str:len() then -- Go ahead and allow commands w/o spaces
+            str2 = string.Trim( str )
+        end
 
-		if strText:sub( 1, str2:len() ):lower() == str2 then
-			if not match or match:len() <= str:len() then -- Don't rematch if there's a more specific one already.
-				match = str
-			end
-		end
-	end
+        if strText:sub( 1, str2:len() ):lower() == str2 then
+            if not match or match:len() <= str:len() then -- Don't rematch if there's a more specific one already.
+                match = str
+            end
+        end
+    end
 
-	if match then -- We've got a winner!
-		local data = ULib.sayCmds[ match ]
+    if match then -- We've got a winner!
+        local data = ULib.sayCmds[ match ]
 
-		local args = string.Trim( strText:sub( match:len() + 1 ) ) -- Strip the caller command out
-		local argv = ULib.splitArgs( args )
+        local args = string.Trim( strText:sub( match:len() + 1 ) ) -- Strip the caller command out
+        local argv = ULib.splitArgs( args )
 
-		-- ULib command callback
-		if data.__cmd then
-			local return_value = hook.Call( ULib.HOOK_COMMAND_CALLED, _, ply, data.__cmd, argv )
-			if return_value == false then
-				if data.hide then
-					return ""
-				else
-					return nil
-				end
-			end
-		end
+        -- ULib command callback
+        if data.__cmd then
+            local return_value = hook.Call( ULib.HOOK_COMMAND_CALLED, nil, ply, data.__cmd, argv )
+            if return_value == false then
+                if data.hide then
+                    return ""
+                else
+                    return nil
+                end
+            end
+        end
 
-		if not ULib.ucl.query( ply, data.access ) then
-			ULib.tsay( ply, "You do not have access to this command, " .. ply:Nick() .. "." )
-			-- Print their name to intimidate them :)
-			return "" -- Block from appearing
-		end
+        if not ULib.ucl.query( ply, data.access ) then
+            ULib.tsay( ply, "You do not have access to this command, " .. ply:Nick() .. "." )
+            -- Print their name to intimidate them :)
+            return "" -- Block from appearing
+        end
 
-		local fn = data.fn
-		local hide = data.hide
+        local fn = data.fn
+        local hide = data.hide
 
-		ULib.pcallError( fn, ply, match:Trim(), argv, args )
+        ULib.pcallError( fn, ply, match:Trim(), argv, args )
 
-		if hide then return "" end
-	end
+        if hide then return "" end
+    end
 
-	return nil
-end
-hook.Add( "PlayerSay", "ULib_saycmd", sayCmdCheck, HOOK_HIGH ) -- High-priority
+    return nil
+end, PRE_HOOK_RETURN ) -- High-priority
 
 
 --[[
@@ -97,15 +96,14 @@ hook.Add( "PlayerSay", "ULib_saycmd", sayCmdCheck, HOOK_HIGH ) -- High-priority
 		v2.40 - Removed the command help parameter, now accepts nil as access (for always allowed)
 ]]
 function ULib.addSayCommand( say_cmd, fn_call, access, hide_say, nospace )
-	say_cmd = string.Trim( say_cmd:lower() )
+    say_cmd = string.Trim( say_cmd:lower() )
 
-	if not nospace then
-		say_cmd = say_cmd .. " "
-	end
+    if not nospace then
+        say_cmd = say_cmd .. " "
+    end
 
-	ULib.sayCmds[ say_cmd ] = { fn=fn_call, hide=hide_say, access=access }
+    ULib.sayCmds[ say_cmd ] = { fn = fn_call, hide = hide_say, access = access }
 end
-
 
 --[[
 	Function: removeSayCommand
@@ -117,6 +115,6 @@ end
 		say_cmd - The command string for says to remove.
 ]]
 function ULib.removeSayCommand( say_cmd )
-	ULib.sayCmds[ say_cmd ] = nil -- Remove both forms
-	ULib.sayCmds[ say_cmd .. " " ] = nil
+    ULib.sayCmds[ say_cmd ] = nil -- Remove both forms
+    ULib.sayCmds[ say_cmd .. " " ] = nil
 end

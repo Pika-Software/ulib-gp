@@ -25,12 +25,12 @@ local dataFolder = "data"
 		v2.70 - Added noMount parameter to *only* look in mod directory.
 ]]
 function ULib.fileExists( f, noMount )
-	if noMount then return file.Exists( f, "MOD" ) end
+    if noMount then return file.Exists( f, "MOD" ) end
 
-	local isDataFolder = f:lower():sub( 1, dataFolder:len() ) ~= dataFolder
-	fWoData = f:sub( dataFolder:len() + 2 ) -- +2 removes path seperator
+    local isDataFolder = f:lower():sub( 1, dataFolder:len() ) ~= dataFolder
+    fWoData = f:sub( dataFolder:len() + 2 ) -- +2 removes path seperator
 
-	return file.Exists( f, "GAME" ) or (isDataFolder and file.Exists( fWoData, "DATA" ))
+    return file.Exists( f, "GAME" ) or (isDataFolder and file.Exists( fWoData, "DATA" ))
 end
 
 --[[
@@ -53,33 +53,33 @@ end
 		v2.70 - Added noMount parameter to *only* look in mod directory.
 ]]
 function ULib.fileRead( f, noMount )
-	local existsWoMount = ULib.fileExists( f, true )
+    local existsWoMount = ULib.fileExists( f, true )
 
-	if noMount then
-		if not existsWoMount then
-			return nil
-		end
+    if noMount then
+        if not existsWoMount then
+            return nil
+        end
 
-		return file.Read( f, "MOD" )
-	end
+        return file.Read( f, "MOD" )
+    end
 
-	local isDataFolder = f:lower():sub( 1, dataFolder:len() ) == dataFolder
-	fWoData = f:sub( dataFolder:len() + 2 ) -- +2 removes path seperator
+    local isDataFolder = f:lower():sub( 1, dataFolder:len() ) == dataFolder
+    fWoData = f:sub( dataFolder:len() + 2 ) -- +2 removes path seperator
 
-	if not existsWoMount and not ULib.fileExists( f ) then
-		return nil
-	end
+    if not existsWoMount and not ULib.fileExists( f ) then
+        return nil
+    end
 
-	if not isDataFolder then
-		return file.Read( f, "GAME" )
-	else
-		-- We want to prefer any data files at the root, but allow for mounted directories
-		if existsWoMount then
-			return file.Read( fWoData, "DATA" )
-		else
-			return file.Read( f, "GAME" )
-		end
-	end
+    if not isDataFolder then
+        return file.Read( f, "GAME" )
+    else
+        -- We want to prefer any data files at the root, but allow for mounted directories
+        if existsWoMount then
+            return file.Read( fWoData, "DATA" )
+        else
+            return file.Read( f, "GAME" )
+        end
+    end
 end
 
 --[[
@@ -97,14 +97,13 @@ end
 		v2.51 - Initial revision (tired of Garry changing his API all the time).
 ]]
 function ULib.fileWrite( f, content )
-	local isDataFolder = f:lower():sub( 1, dataFolder:len() ) == dataFolder
-	fWoData = f:sub( dataFolder:len() + 2 ) -- +2 removes path seperator
+    local isDataFolder = f:lower():sub( 1, dataFolder:len() ) == dataFolder
+    fWoData = f:sub( dataFolder:len() + 2 ) -- +2 removes path seperator
 
-	if not isDataFolder then return nil end
+    if not isDataFolder then return nil end
 
-	file.Write( fWoData, content )
+    file.Write( fWoData, content )
 end
-
 
 --[[
 	Function: fileAppend
@@ -121,14 +120,13 @@ end
 		v2.51 - Initial revision (tired of Garry changing his API all the time).
 ]]
 function ULib.fileAppend( f, content )
-	local isDataFolder = f:lower():sub( 1, dataFolder:len() ) == dataFolder
-	fWoData = f:sub( dataFolder:len() + 2 ) -- +2 removes path seperator
+    local isDataFolder = f:lower():sub( 1, dataFolder:len() ) == dataFolder
+    fWoData = f:sub( dataFolder:len() + 2 ) -- +2 removes path seperator
 
-	if not isDataFolder then return nil end
+    if not isDataFolder then return nil end
 
-	file.Append( fWoData, content )
+    file.Append( fWoData, content )
 end
-
 
 --[[
 	Function: fileCreateDir
@@ -144,14 +142,13 @@ end
 		v2.51 - Initial revision (tired of Garry changing his API all the time).
 ]]
 function ULib.fileCreateDir( f )
-	local isDataFolder = f:lower():sub( 1, dataFolder:len() ) == dataFolder
-	fWoData = f:sub( dataFolder:len() + 2 ) -- +2 removes path seperator
+    local isDataFolder = f:lower():sub( 1, dataFolder:len() ) == dataFolder
+    fWoData = f:sub( dataFolder:len() + 2 ) -- +2 removes path seperator
 
-	if not isDataFolder then return nil end
+    if not isDataFolder then return nil end
 
-	file.CreateDir( fWoData )
+    file.CreateDir( fWoData )
 end
-
 
 --[[
 	Function: fileDelete
@@ -167,14 +164,13 @@ end
 		v2.51 - Initial revision (tired of Garry changing his API all the time).
 ]]
 function ULib.fileDelete( f )
-	local isDataFolder = f:lower():sub( 1, dataFolder:len() ) == dataFolder
-	fWoData = f:sub( dataFolder:len() + 2 ) -- +2 removes path seperator
+    local isDataFolder = f:lower():sub( 1, dataFolder:len() ) == dataFolder
+    fWoData = f:sub( dataFolder:len() + 2 ) -- +2 removes path seperator
 
-	if not isDataFolder then return nil end
+    if not isDataFolder then return nil end
 
-	file.Delete( fWoData )
+    file.Delete( fWoData )
 end
-
 
 --[[
 	Function: fileIsDir
@@ -196,13 +192,12 @@ end
 		v2.70 - Added noMount parameter to *only* look in mod directory.
 ]]
 function ULib.fileIsDir( f, noMount )
-	if not noMount then
-		return file.IsDir( f, "GAME" )
-	else
-		return file.IsDir( f, "MOD" )
-	end
+    if not noMount then
+        return file.IsDir( f, "GAME" )
+    else
+        return file.IsDir( f, "MOD" )
+    end
 end
-
 
 --[[
 	Function: execFile
@@ -223,14 +218,13 @@ end
 		v2.70 - Added noMount parameter to *only* look in mod directory.
 ]]
 function ULib.execFile( f, queueName, noMount )
-	if not ULib.fileExists( f, noMount ) then
-		ULib.error( "Called execFile with invalid file! " .. f )
-		return
-	end
+    if not ULib.fileExists( f, noMount ) then
+        ULib.error( "Called execFile with invalid file! " .. f )
+        return
+    end
 
-	ULib.execString( ULib.fileRead( f, noMount ), queueName )
+    ULib.execString( ULib.fileRead( f, noMount ), queueName )
 end
-
 
 --[[
 	Function: execString
@@ -248,34 +242,34 @@ end
 		v2.50 - Added queueName to specify queue name to use. Removed ability to execute on players.
 ]]
 function ULib.execString( f, queueName )
-	local lines = string.Explode( "\n", f )
+    local lines = string.Explode( "\n", f )
 
-	local buffer = ""
-	local buffer_lines = 0
-	local exec = "exec "
-	for _, line in ipairs( lines ) do
-		line = string.Trim( line )
-		if line:lower():sub( 1, exec:len() ) == exec then
-			local dummy, dummy, cfg = line:lower():find( "^exec%s+([%w%.]+)%s*/?/?.*$")
-			if not cfg:find( ".cfg", 1, true ) then cfg = cfg .. ".cfg" end -- Add it if it's not there
-			ULib.execFile( "cfg/" .. cfg, queueName )
-		elseif line ~= "" then
-			buffer = buffer .. line .. "\n"
-			buffer_lines = buffer_lines + 1
+    local buffer = ""
+    local buffer_lines = 0
+    local exec = "exec "
+    for _, line in ipairs( lines ) do
+        line = string.Trim( line )
+        if line:lower():sub( 1, exec:len() ) == exec then
+            local dummy, dummy, cfg = line:lower():find( "^exec%s+([%w%.]+)%s*/?/?.*$" )
+            if not cfg:find( ".cfg", 1, true ) then cfg = cfg .. ".cfg" end -- Add it if it's not there
 
-			if buffer_lines >= 10 then
-				ULib.namedQueueFunctionCall( queueName, ULib.consoleCommand, buffer )
-				buffer_lines = 0
-				buffer = ""
-			end
-		end
-	end
+            ULib.execFile( "cfg/" .. cfg, queueName )
+        elseif line ~= "" then
+            buffer = buffer .. line .. "\n"
+            buffer_lines = buffer_lines + 1
 
-	if buffer_lines > 0 then
-		ULib.namedQueueFunctionCall( queueName, ULib.consoleCommand, buffer )
-	end
+            if buffer_lines >= 10 then
+                ULib.namedQueueFunctionCall( queueName, ULib.consoleCommand, buffer )
+                buffer_lines = 0
+                buffer = ""
+            end
+        end
+    end
+
+    if buffer_lines > 0 then
+        ULib.namedQueueFunctionCall( queueName, ULib.consoleCommand, buffer )
+    end
 end
-
 
 --[[
 	Function: execFileULib
@@ -295,14 +289,13 @@ end
 		v2.62 - Initial.
 ]]
 function ULib.execFileULib( f, safeMode, noMount )
-	if not ULib.fileExists( f, noMount ) then
-		ULib.error( "Called execFileULib with invalid file! " .. f )
-		return
-	end
+    if not ULib.fileExists( f, noMount ) then
+        ULib.error( "Called execFileULib with invalid file! " .. f )
+        return
+    end
 
-	ULib.execStringULib( ULib.fileRead( f, noMount ), safeMode )
+    ULib.execStringULib( ULib.fileRead( f, noMount ), safeMode )
 end
-
 
 --[[
 	Function: execStringULib
@@ -321,27 +314,26 @@ end
 		v2.62 - Initial.
 ]]
 function ULib.execStringULib( f, safeMode )
-	local lines = string.Explode( "\n", f )
-	local srvPly = Entity( -1 ) -- Emulate the console callback object
+    local lines = string.Explode( "\n", f )
+    local srvPly = Entity( -1 ) -- Emulate the console callback object
 
-	for _, line in ipairs( lines ) do
-		line = string.Trim( line )
-		if line ~= "" then
-			local argv = ULib.splitArgs( line )
-			local commandName = table.remove( argv, 1 )
-			local cmdTable, commandName, argv = ULib.cmds.getCommandTableAndArgv( commandName, argv )
+    for _, line in ipairs( lines ) do
+        line = string.Trim( line )
+        if line ~= "" then
+            local argv = ULib.splitArgs( line )
+            local commandName = table.remove( argv, 1 )
+            local cmdTable, commandName, argv = ULib.cmds.getCommandTableAndArgv( commandName, argv )
 
-			if not cmdTable then
-				Msg( "Error executing " .. tostring( commandName ) .. "\n" )
-			elseif cmdTable.__unsafe then
-				Msg( "Not executing unsafe command " .. commandName .. "\n" )
-			else
-				ULib.cmds.execute( cmdTable, srvPly, commandName, argv )
-			end
-		end
-	end
+            if not cmdTable then
+                Msg( "Error executing " .. tostring( commandName ) .. "\n" )
+            elseif cmdTable.__unsafe then
+                Msg( "Not executing unsafe command " .. commandName .. "\n" )
+            else
+                ULib.cmds.execute( cmdTable, srvPly, commandName, argv )
+            end
+        end
+    end
 end
-
 
 --[[
 	Function: serialize
@@ -361,31 +353,31 @@ end
 		v2.40 - Can now serialize entities and players
 ]]
 function ULib.serialize( v )
-	local t = type( v )
-	local str
-	if t == "string" then
-		str = string.format( "%q", v )
-	elseif t == "boolean" or t == "number" then
-		str = tostring( v )
-	elseif t == "table" then
-		str = table.ToString( v )
-	elseif t == "Vector" then
-		str = "Vector(" .. v.x .. "," .. v.y .. "," .. v.z .. ")"
-	elseif t == "Angle" then
-		str = "Angle(" .. v.pitch .. "," .. v.yaw .. "," .. v.roll .. ")"
-	elseif t == "Player" then
-		str = tostring( v )
-	elseif t == "Entity" then
-		str = tostring( v )
-	elseif t == "nil" then
-		str = "nil"
-	else
-		ULib.error( "Passed an invalid parameter to serialize! (type: " .. t .. ")" )
-		return
-	end
-	return str
-end
+    local t = type( v )
+    local str
+    if t == "string" then
+        str = string.format( "%q", v )
+    elseif t == "boolean" or t == "number" then
+        str = tostring( v )
+    elseif t == "table" then
+        str = table.ToString( v )
+    elseif t == "Vector" then
+        str = "Vector(" .. v.x .. "," .. v.y .. "," .. v.z .. ")"
+    elseif t == "Angle" then
+        str = "Angle(" .. v.pitch .. "," .. v.yaw .. "," .. v.roll .. ")"
+    elseif t == "Player" then
+        str = tostring( v )
+    elseif t == "Entity" then
+        str = tostring( v )
+    elseif t == "nil" then
+        str = "nil"
+    else
+        ULib.error( "Passed an invalid parameter to serialize! (type: " .. t .. ")" )
+        return
+    end
 
+    return str
+end
 
 --[[
 	Function: isSandbox
@@ -393,16 +385,15 @@ end
 	Returns true if the current gamemode is sandbox or is derived from sandbox.
 ]]
 function ULib.isSandbox()
-	return GAMEMODE.IsSandboxDerived
+    return GAMEMODE.IsSandboxDerived
 end
 
-
 local function insertResult( files, result, relDir )
-	if not relDir then
-		table.insert( files, result )
-	else
-		table.insert( files, relDir .. "/" .. result )
-	end
+    if not relDir then
+        table.insert( files, result )
+    else
+        table.insert( files, relDir .. "/" .. result )
+    end
 end
 
 --[[
@@ -426,54 +417,55 @@ end
 		v2.70 - Added noMount parameter to *only* look in mod directory.
 ]]
 function ULib.filesInDir( dir, recurse, noMount, root )
-	if not ULib.fileIsDir( dir ) then
-		return nil
-	end
+    if not ULib.fileIsDir( dir ) then
+        return nil
+    end
 
-	local files = {}
-	local relDir
-	if root then
-		relDir = dir:gsub( root .. "[\\/]", "" )
-	end
-	root = root or dir
+    local files = {}
+    local relDir
+    if root then
+        relDir = dir:gsub( root .. "[\\/]", "" )
+    end
 
-	local resultFiles, resultFolders = file.Find( dir .. "/*", not noMount and "GAME" or "MOD" )
+    root = root or dir
 
-	for i=1, #resultFiles do
-		insertResult( files, resultFiles[ i ], relDir )
-	end
+    local resultFiles, resultFolders = file.Find( dir .. "/*", not noMount and "GAME" or "MOD" )
 
-	for i=1, #resultFolders do
-		if recurse then
-			files = table.Add( files, ULib.filesInDir( dir .. "/" .. resultFolders[ i ], recurse, noMount, root ) )
-		else
-			insertResult( files, resultFolders[ i ], relDir )
-		end
-	end
+    for i = 1, #resultFiles do
+        insertResult( files, resultFiles[ i ], relDir )
+    end
 
-	return files
+    for i = 1, #resultFolders do
+        if recurse then
+            files = table.Add( files, ULib.filesInDir( dir .. "/" .. resultFolders[ i ], recurse, noMount, root ) )
+        else
+            insertResult( files, resultFolders[ i ], relDir )
+        end
+    end
+
+    return files
 end
-
 
 -- Helper function for <queueFunctionCall()>
 local stacks = {}
 local function onThink()
-	local remove = true
-	for queueName, stack in pairs( stacks ) do
-		local num = #stack
-		if num > 0 then
-			remove = false
-			local b, e = pcall( stack[ 1 ].fn, unpack( stack[ 1 ], 1, stack[ 1 ].n ) )
-			if not b then
-				ErrorNoHalt( "ULib queue error: " .. tostring( e ) .. "\n" )
-			end
-			table.remove( stack, 1 ) -- Remove the first inserted item. This is FIFO
-		end
-	end
+    local remove = true
+    for queueName, stack in pairs( stacks ) do
+        local num = #stack
+        if num > 0 then
+            remove = false
+            local b, e = pcall( stack[ 1 ].fn, unpack( stack[ 1 ], 1, stack[ 1 ].n ) )
+            if not b then
+                ErrorNoHalt( "ULib queue error: " .. tostring( e ) .. "\n" )
+            end
 
-	if remove then
-		hook.Remove( "Think", "ULibQueueThink" )
-	end
+            table.remove( stack, 1 ) -- Remove the first inserted item. This is FIFO
+        end
+    end
+
+    if remove then
+        hook.Remove( "Think", "ULibQueueThink" )
+    end
 end
 
 
@@ -493,12 +485,12 @@ end
 		v2.40 - Initial (But dragged over from UPS).
 ]]
 function ULib.queueFunctionCall( fn, ... )
-	if type( fn ) ~= "function" then
-		error( "queueFunctionCall received a bad function", 2 )
-		return
-	end
+    if type( fn ) ~= "function" then
+        error( "queueFunctionCall received a bad function", 2 )
+        return
+    end
 
-	ULib.namedQueueFunctionCall( "defaultQueueName", fn, ... )
+    ULib.namedQueueFunctionCall( "defaultQueueName", fn, ... )
 end
 
 --[[
@@ -517,17 +509,16 @@ end
 		v2.50 - Initial.
 ]]
 function ULib.namedQueueFunctionCall( queueName, fn, ... )
-	queueName = queueName or "defaultQueueName"
-	if type( fn ) ~= "function" then
-		error( "queueFunctionCall received a bad function", 2 )
-		return
-	end
+    queueName = queueName or "defaultQueueName"
+    if type( fn ) ~= "function" then
+        error( "queueFunctionCall received a bad function", 2 )
+        return
+    end
 
-	stacks[ queueName ] = stacks[ queueName ] or {}
-	table.insert( stacks[ queueName ], { fn=fn, n=select( "#", ... ), ... } )
-	hook.Add( "Think", "ULibQueueThink", onThink, HOOK_MONITOR_HIGH )
+    stacks[ queueName ] = stacks[ queueName ] or {}
+    table.insert( stacks[ queueName ], { fn = fn, n = select( "#", ... ), ... } )
+    hook.Add( "Think", "ULibQueueThink", onThink, PRE_HOOK )
 end
-
 
 --[[
 	Function: backupFile
@@ -547,21 +538,21 @@ end
 		v2.40 - Initial.
 ]]
 function ULib.backupFile( f )
-	local contents = ULib.fileRead( f )
-	local filename = f:GetFileFromFilename():sub( 1, -5 ) -- Remove '.txt'
-	local folder = f:GetPathFromFilename()
+    local contents = ULib.fileRead( f )
+    local filename = f:GetFileFromFilename():sub( 1, -5 ) -- Remove '.txt'
+    local folder = f:GetPathFromFilename()
 
-	local num = 1
-	local targetPath = folder .. filename .. "_backup.txt"
-	while ULib.fileExists( targetPath ) do
-		num = num + 1
-		targetPath = folder .. filename .. "_backup" .. num .. ".txt"
-	end
+    local num = 1
+    local targetPath = folder .. filename .. "_backup.txt"
+    while ULib.fileExists( targetPath ) do
+        num = num + 1
+        targetPath = folder .. filename .. "_backup" .. num .. ".txt"
+    end
 
-	-- We now have a filename that doesn't yet exist!
-	ULib.fileWrite( targetPath, contents )
+    -- We now have a filename that doesn't yet exist!
+    ULib.fileWrite( targetPath, contents )
 
-	return targetPath
+    return targetPath
 end
 
 --[[
@@ -574,8 +565,9 @@ end
 		2.20 - Initial
 ]]
 function ULib.nameCheck( data )
-	hook.Call( ULib.HOOK_PLAYER_NAME_CHANGED, nil, Player(data.userid), data.oldname, data.newname )
+    hook.Call( ULib.HOOK_PLAYER_NAME_CHANGED, nil, Player( data.userid ), data.oldname, data.newname )
 end
+
 gameevent.Listen( "player_changename" )
 hook.Add( "player_changename", "ULibNameCheck", ULib.nameCheck )
 
@@ -595,16 +587,14 @@ hook.Add( "player_changename", "ULibNameCheck", ULib.nameCheck )
 		v2.40 - Initial.
 ]]
 function ULib.getPlyByUID( uid )
-	local players = player.GetAll()
-	for _, ply in ipairs( players ) do
-		if ply:UniqueID() == uid then
-			return ply
-		end
-	end
+    for _, pl in player.Iterator() do
+        if pl:UniqueID() == uid then
+            return pl
+        end
+    end
 
-	return nil
+    return nil
 end
-
 
 --[[
 	Function: pcallError
@@ -625,11 +615,11 @@ end
 		v2.50 - Initial.
 ]]
 function ULib.pcallError( ... )
-	local returns = { pcall( ... ) }
+    local returns = { pcall( ... ) }
 
-	if not returns[ 1 ] then -- The status flag
-		ErrorNoHalt( returns[ 2 ] ) -- The error message
-	end
+    if not returns[ 1 ] then        -- The status flag
+        ErrorNoHalt( returns[ 2 ] ) -- The error message
+    end
 
-	return unpack( returns )
+    return unpack( returns )
 end
